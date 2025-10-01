@@ -1,179 +1,143 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
+  <title>Login Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lab 04 – Form Login</title>
   <style>
     :root{
-      --bg:#0f172a; /* slate-900 */
-      --panel:#0b1220; /* deep panel */
-      --panel-border:#1f2937; /* slate-800 */
-      --text:#e5e7eb; /* gray-200 */
-      --muted:#94a3b8; /* slate-400 */
-      --primary:#2563eb; /* blue-600 */
-      --primary-dark:#1d4ed8; /* blue-700 */
-      --danger:#ef4444; /* red-500 */
-      --ok:#22c55e; /* green-500 */
-      --ring: 0 0 0 3px rgba(37,99,235,.35);
+      --blue-900:#0b2f6b;
+      --blue-700:#1e3c72;
+      --blue-500:#2a66c7;
+      --gold-200:#fde7a9;
+      --gold-400:#f9cd57;
+      --gold-500:#f8b500;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
-      margin:0; display:grid; place-items:center; min-height:100%;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+      height:100svh; margin:0;
+      display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(100deg, var(--blue-900), var(--blue-700) 25%, var(--blue-500) 50%, var(--gold-200) 75%, var(--gold-500));
+
       background:
-        radial-gradient(1200px 600px at 10% 10%, #1f2937, transparent),
-        radial-gradient(900px 500px at 90% 20%, #0b265a, transparent),
-        var(--bg);
-      color:var(--text);
+        radial-gradient(1200px 800px at 10% 20%, rgba(255,255,255,.15), transparent 60%),
+        radial-gradient(900px 700px at 90% 80%, rgba(255,255,255,.18), transparent 55%),
+        linear-gradient(100deg, var(--blue-900), var(--blue-700) 25%, var(--blue-500) 50%, var(--gold-200) 75%, var(--gold-500));
     }
     .card{
-      width:min(92vw,420px);
-      background:linear-gradient(180deg, var(--panel) 0%, rgba(11,18,32,.88) 60%, rgba(11,18,32,.8) 100%);
-      border:1px solid var(--panel-border);
-      border-radius:18px;
-      box-shadow:0 10px 30px rgba(0,0,0,.45);
-      padding:28px 24px;
-      backdrop-filter: blur(6px);
+      width:min(92vw, 360px);
+      background:#fff; padding:26px 24px; border-radius:16px;
+      box-shadow:0 20px 40px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.08);
+      animation:fadeIn .6s ease both;
     }
-    .brand{display:flex; align-items:center; gap:12px; margin-bottom:16px}
-    .brand .logo{width:40px;height:40px; border-radius:10px; background:linear-gradient(135deg,var(--primary),#8b5cf6); display:grid; place-items:center; font-weight:800}
-    .brand h1{font-size:1.25rem; margin:0}
-    .desc{margin:6px 0 18px; color:var(--muted); font-size:.95rem}
+    @keyframes fadeIn{from{opacity:0; transform:translateY(-14px)} to{opacity:1; transform:translateY(0)}}
+    h1{margin:0 0 18px; text-align:center; color:#1f2937; font-size:22px}
 
-    form{display:grid; gap:14px}
-    label{font-size:.9rem}
-    .field{display:grid; gap:6px}
-    .input{display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.02); border:1px solid #243041; border-radius:12px; padding:12px 12px; transition:border .2s, box-shadow .2s}
-    .input:focus-within{border-color:var(--primary); box-shadow:var(--ring)}
-    .input input{flex:1; background:transparent; border:0; outline:0; color:var(--text); font-size:1rem}
-    .input button.icon{background:none;border:0;color:var(--muted);cursor:pointer}
+    label{display:block; margin-top:10px; font-weight:600; color:#374151; font-size:13px}
+    input{
+      width:100%; margin-top:6px; padding:11px 12px;
+      border:1px solid #d1d5db; border-radius:8px; font-size:14px; outline:none;
+      transition:.18s border-color, .18s box-shadow;
+      background:#fff;
+    }
+    input:focus{border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.18)}
+    button#loginBtn{
+      width:100%; margin-top:18px; padding:12px;
+      border:0; border-radius:10px; color:#fff; font-weight:700; letter-spacing:.2px; cursor:pointer;
+      background:
+        linear-gradient(90deg, var(--blue-700), var(--blue-500) 45%, var(--gold-400) 100%);
+      box-shadow:0 8px 18px rgba(30,60,114,.25);
+      transition:transform .08s ease, filter .18s ease;
+    }
+    button#loginBtn:hover{filter:brightness(1.03)}
+    button#loginBtn:active{transform:translateY(1px)}
 
-    .row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:4px}
-    .remember{display:flex; align-items:center; gap:8px; color:var(--muted); font-size:.95rem}
-    .row input[type="checkbox"]{width:16px;height:16px}
+    .links{display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:13px}
+    .links a{color:#1e3c72; text-decoration:none}
+    .links a:hover{text-decoration:underline}
 
-    .actions{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:6px}
-    .btn{border:0; padding:12px 14px; border-radius:12px; cursor:pointer; font-weight:600; font-size:1rem}
-    .btn-primary{background:var(--primary); color:white}
-    .btn-primary:hover{background:var(--primary-dark)}
-    .btn-ghost{background:transparent; color:var(--text); border:1px solid #334155}
-    .btn-ghost:hover{background:#0b1220}
+    .social{
+      margin-top:18px; display:flex; justify-content:center; gap:16px;
+    }
+    .social button{
+      width:52px; height:52px; border-radius:50%;
+      background:#fff; border:1px solid #e5e7eb;
+      display:flex; align-items:center; justify-content:center; cursor:pointer;
+      box-shadow:0 3px 10px rgba(0,0,0,.08);
+      transition:transform .15s ease, box-shadow .15s ease;
+    }
+    .social button:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.12)}
+    .social img{width:26px; height:26px; display:block}
 
-    .msg{margin-top:10px; font-size:.95rem}
-    .msg.error{color:var(--danger)}
-    .msg.success{color:var(--ok)}
-
-    .helper{margin-top:14px; color:var(--muted); font-size:.85rem}
-    .helper code{background:rgba(148,163,184,.15); padding:2px 6px; border-radius:6px}
-    .register{margin-top:16px; text-align:center}
-    .register a{color:var(--primary); text-decoration:none; font-weight:600}
-    .register a:hover{text-decoration:underline}
+    #msg,#error{margin-top:14px; text-align:center; font-weight:700; min-height:20px}
+    #msg{color:#16a34a}
+    #error{color:#e11d48}
   </style>
 </head>
 <body>
-  <main class="card" aria-labelledby="title">
-    <div class="brand">
-      <div class="logo" aria-hidden="true">🔒</div>
-      <h1 id="title">Đăng nhập hệ thống</h1>
+  <div class="card" role="main" aria-label="Login form">
+    <h1>Đăng nhập</h1>
+
+    <label for="username">Username</label>
+    <input id="username" type="text" autocomplete="username" />
+
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" />
+
+    <button id="loginBtn">LOGIN</button>
+
+    <div class="links">
+      <a id="forgotLink" href="forgot.html">Forgot password?</a>
+      <a id="signupLink" href="signup.html">SIGN UP</a>
     </div>
-    <p class="desc">Lab 04 – HTML/CSS/JS: có Username, Password, Remember me, Login, Cancel và kiểm tra dữ liệu cơ bản.</p>
 
-    <form id="loginForm" novalidate>
-      <div class="field">
-        <label for="username">Username</label>
-        <div class="input">
-          <input id="username" name="username" type="text" placeholder="vd: admin" autocomplete="username" required minlength="3" />
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="password">Password</label>
-        <div class="input">
-          <input id="password" name="password" type="password" placeholder="ít nhất 6 ký tự" autocomplete="current-password" required minlength="6" />
-          <button class="icon" type="button" id="togglePwd" aria-label="Hiện/ẩn mật khẩu">👁️</button>
-        </div>
-      </div>
-
-      <div class="row">
-        <label class="remember"><input id="remember" type="checkbox" /> Remember me</label>
-        <a href="#" id="forgot" class="remember" style="text-decoration:none">Quên mật khẩu?</a>
-      </div>
-
-      <div class="actions">
-        <button type="submit" class="btn btn-primary">Login</button>
-        <button type="button" id="btnCancel" class="btn btn-ghost">Cancel</button>
-      </div>
-
-      <div id="msg" class="msg" role="alert" aria-live="polite"></div>
-    </form>
-
-    <p class="helper">Demo đăng nhập giả lập: dùng <code>admin</code> / <code>123456</code>. (Chỉ kiểm tra trên trình duyệt, không có server.)</p>
-    <div class="register">
-      <p>Chưa có tài khoản? <a href="#">Đăng ký ngay</a></p>
+    <div class="social" aria-label="Social login">
+      <button id="btnFacebook" title="Facebook">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/48px-Facebook_Logo_%282019%29.png" alt="Facebook">
+      </button>
+      <button id="btnTwitter" title="X (Twitter)">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/X_logo_2023_original.svg/48px-X_logo_2023_original.svg.png" alt="X (Twitter)">
+      </button>
+      <button id="btnGoogle" title="Google">
+        <img src="https://static.vecteezy.com/system/resources/previews/013/948/549/non_2x/google-logo-on-transparent-white-background-free-vector.jpg" alt="Google">
+      </button>
     </div>
-  </main>
+
+    <div id="msg" aria-live="polite"></div>
+    <div id="error" aria-live="assertive"></div>
+  </div>
 
   <script>
-    const usernameEl = document.getElementById('username');
-    const passwordEl = document.getElementById('password');
-    const rememberEl = document.getElementById('remember');
-    const msgEl = document.getElementById('msg');
+    const VALID_USER = "n23dcpt067";
+    const VALID_PASS = "123456";
 
-    const savedUser = localStorage.getItem('remember_username');
-    if (savedUser) {
-      usernameEl.value = savedUser;
-      rememberEl.checked = true;
-    }
+    const $ = (s)=>document.querySelector(s);
+    const username = $("#username");
+    const password = $("#password");
+    const msg = $("#msg");
+    const error = $("#error");
 
-    document.getElementById('togglePwd').addEventListener('click', () => {
-      const isPwd = passwordEl.type === 'password';
-      passwordEl.type = isPwd ? 'text' : 'password';
-    });
-
-    document.getElementById('btnCancel').addEventListener('click', () => {
-      document.getElementById('loginForm').reset();
-      msgEl.textContent = '';
-      msgEl.className = 'msg';
-      passwordEl.type = 'password';
-    });
-
-    document.getElementById('loginForm').addEventListener('submit', (e) => {
+    $("#loginBtn").addEventListener("click", (e)=>{
       e.preventDefault();
-      msgEl.className = 'msg';
-      msgEl.textContent = '';
-
-      const username = usernameEl.value.trim();
-      const password = passwordEl.value.trim();
-
-      if (!username) return showError('Vui lòng nhập Username.');
-      if (username.length < 3) return showError('Username phải ≥ 3 ký tự.');
-      if (!password) return showError('Vui lòng nhập Password.');
-      if (password.length < 6) return showError('Password phải ≥ 6 ký tự.');
-
-      const OK_USER = 'admin';
-      const OK_PASS = '123456';
-      const isAuthed = username === OK_USER && password === OK_PASS;
-
-      if (!isAuthed) {
-        return showError('Sai Username hoặc Password.');
+      msg.textContent=""; error.textContent="";
+      if(!username.value.trim()){
+        error.textContent="Vui lòng nhập Username"; username.focus(); return;
       }
-      if (rememberEl.checked) {
-        localStorage.setItem('remember_username', username);
-      } else {
-        localStorage.removeItem('remember_username');
+      if(!password.value){
+        error.textContent="Vui lòng nhập Password"; password.focus(); return;
       }
-
-      msgEl.textContent = 'Đăng nhập thành công!';
-      msgEl.className = 'msg success';
-
+      if(username.value===VALID_USER && password.value===VALID_PASS){
+        msg.textContent="Login success ✅";
+        setTimeout(()=>{ window.location.href="dashboard.html"; }, 450);
+      }else{
+        error.textContent="Sai username hoặc password!";
+      }
     });
 
-    function showError(text){
-      msgEl.textContent = text;
-      msgEl.className = 'msg error';
-    }
+    $("#btnFacebook").onclick = ()=> msg.textContent = "Social: Facebook";
+    $("#btnTwitter").onclick  = ()=> msg.textContent = "Social: X";
+    $("#btnGoogle").onclick   = ()=> msg.textContent = "Social: Google";
   </script>
 </body>
 </html>
